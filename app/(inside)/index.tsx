@@ -27,6 +27,7 @@ const Page = () => {
 
   // Prompt user to enter a call id and navigate to the room
   const onJoinMeeting = () => {
+    console.log("Clicked on onJoinMeeting");
     Alert.prompt(
       "Join",
       "Please enter your Call ID:",
