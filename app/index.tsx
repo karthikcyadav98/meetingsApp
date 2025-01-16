@@ -26,6 +26,7 @@ const Page = () => {
     try {
       const result = await onLogin!(email, password);
     } catch (e) {
+      console.log("error during log in onSignInPress", e);
       Alert.alert("Error", "Could not log in");
     } finally {
       setLoading(false);

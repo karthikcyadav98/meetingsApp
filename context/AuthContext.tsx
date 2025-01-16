@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }: any) => {
   const login = async (email: string, password: string) => {
     try {
       // fetch POST request to /login
+      console.log("url", `${API_URL}/login`);
       const result = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
@@ -63,6 +64,7 @@ export const AuthProvider = ({ children }: any) => {
         },
         body: JSON.stringify({ email, password }),
       });
+      console.log("resultresult", result);
 
       const json = await result.json();
 
@@ -78,6 +80,8 @@ export const AuthProvider = ({ children }: any) => {
 
       return result;
     } catch (e) {
+      console.log("error in the login function controller", e);
+
       return { error: true, msg: (e as any).response.data.msg };
     }
   };

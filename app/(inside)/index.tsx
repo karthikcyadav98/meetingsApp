@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   Dimensions,
   Alert,
+  Modal,
+  TextInput,
+  Button,
 } from "react-native";
 //   import { rooms } from '../../assets/data/rooms';
 import { Link, useRouter } from "expo-router";
@@ -15,9 +18,12 @@ const HEIGHT = Dimensions.get("window").height;
 
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
+import { useState } from "react";
 
 const Page = () => {
   const router = useRouter();
+  const [visible, setVisible] = useState(false);
+  const [callId, setCallId] = useState("");
 
   // Create random id and navigate to the room
   const onStartMeeting = async () => {
@@ -28,15 +34,17 @@ const Page = () => {
   // Prompt user to enter a call id and navigate to the room
   const onJoinMeeting = () => {
     console.log("Clicked on onJoinMeeting");
-    Alert.prompt(
-      "Join",
-      "Please enter your Call ID:",
-      (id) => {
-        console.log("Joining call: ", id);
-        router.push(`/(inside)/(room)/${id}`);
-      },
-      "plain-text"
-    );
+    setVisible(true);
+
+    // Alert.prompt(
+    //   "Join",
+    //   "Please enter your Call ID:",
+    //   (id) => {
+    //     console.log("Joining call: ", id);
+    //     router.push(`/(inside)/(room)/${id}`);
+    //   },
+    //   "plain-text"
+    // );
   };
 
   return (
@@ -54,6 +62,42 @@ const Page = () => {
           <Ionicons name="videocam-outline" size={24} />
           <Text style={styles.buttonText}>Start new Meeting</Text>
         </TouchableOpacity>
+
+        {visible && (
+          <Modal transparent={true} visible={visible} animationType="slide">
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: 20,
+                  borderRadius: 10,
+                }}
+              >
+                <Text>Enter Call ID:</Text>
+                <TextInput
+                  value={callId}
+                  onChangeText={setCallId}
+                  placeholder="Call ID"
+                  style={{ borderBottomWidth: 1, marginBottom: 10 }}
+                />
+                <Button
+                  title="Join"
+                  onPress={() => {
+                    console.log("Joining call: ", callId);
+                    setVisible(false);
+                    router.push(`/(inside)/(room)/${callId}`);
+                  }}
+                />
+              </View>
+            </View>
+          </Modal>
+        )}
 
         <TouchableOpacity onPress={onJoinMeeting} style={styles.button}>
           <Ionicons name="business-outline" size={24} />
